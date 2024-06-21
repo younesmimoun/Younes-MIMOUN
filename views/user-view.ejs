@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User View</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #343a40;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">MyBank</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users">Users</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/accounts">Accounts</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/transactions">Transactions</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+    <h1 class="my-4">Hello <%= currentUser.NAME %></h1>
+    <h2>Bank accounts:</h2>
+    <ul class="list-group mb-4">
+        <% accounts.forEach(function(account) { %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong><%= account.NAME %></strong> - <%= account.AMOUNT %>$ - <%= account.TRANSACTIONS %> transactions
+                </div>
+            </li>
+        <% }); %>
+    </ul>
+
+    <h2>Create a new bank account</h2>
+    <form action="/accounts" method="POST" class="mb-4">
+        <input type="hidden" name="user_id" value="<%= currentUser.ID %>">
+        <div class="form-group">
+            <label for="name">Account Name:</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Account</button>
+    </form>
+
+    <h2>Create a new transaction</h2>
+    <form action="/transactions" method="POST">
+        <input type="hidden" name="user_id" value="<%= currentUser.ID %>">
+        <div class="form-group">
+            <label for="account_id">Account ID:</label>
+            <input type="number" id="account_id" name="account_id" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="name">Transaction Name:</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="amount" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="type">Type:</label>
+            <select id="type" name="type" class="form-control" required>
+                <option value="0">Out</option>
+                <option value="1">In</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Transaction</button>
+    </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
